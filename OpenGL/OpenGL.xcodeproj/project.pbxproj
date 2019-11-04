@@ -31,6 +31,7 @@
 		3DECF937236DD539006425A3 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../../../usr/local/Cellar/glfw/3.3/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
 		3DECF939236DD54A006425A3 /* libGLEW.2.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.1.0.dylib; path = ../../../../../../usr/local/Cellar/glew/2.1.0/lib/libGLEW.2.1.0.dylib; sourceTree = "<group>"; };
 		3DECF93C236DD5D0006425A3 /* Application.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Application.cpp; sourceTree = "<group>"; };
+		3DECF97723709506006425A3 /* Basic.shader */ = {isa = PBXFileReference; lastKnownFileType = text; path = Basic.shader; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +68,7 @@
 		3DECF92C236DD4C6006425A3 /* OpenGL */ = {
 			isa = PBXGroup;
 			children = (
+				3DECF975237094B7006425A3 /* res */,
 				3DECF93B236DD56E006425A3 /* src */,
 			);
 			path = OpenGL;
@@ -88,6 +90,22 @@
 				3DECF93C236DD5D0006425A3 /* Application.cpp */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		3DECF975237094B7006425A3 /* res */ = {
+			isa = PBXGroup;
+			children = (
+				3DECF976237094C9006425A3 /* shaders */,
+			);
+			path = res;
+			sourceTree = "<group>";
+		};
+		3DECF976237094C9006425A3 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				3DECF97723709506006425A3 /* Basic.shader */,
+			);
+			path = shaders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

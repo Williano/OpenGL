@@ -10,6 +10,9 @@
    Standard C++ libraries
  */
 #include <iostream>
+#include <string>
+#include <fstream>
+#include <sstream>
 
 
 /*
@@ -20,6 +23,43 @@
 
 #define GLEW_STATIC
 
+
+struct shaderProgramSource {
+    std::string vertexSource;
+    std::string fragmentSource;
+};
+
+static shaderProgramSource parseShader(const std::string& filepath){
+    
+    std::ifstream stream(filepath);
+    
+    enum class shaderType {
+        NONE = -1, VERTEX = 0, FRAGMENT = 1
+    };
+    
+    std::string line;
+    std::stringstream ss[2];
+    shaderType type = shaderType::NONE;
+    
+    while (getline(stream, line)) {
+        if (line.find("#shader") != std::string::npos) {
+            if (line.find("vertex") != std::string::npos) {
+                type = shaderType::VERTEX;
+                
+            }
+            
+            else if (line.find("fragment") != std::string::npos) {
+                type = shaderType::FRAGMENT;
+            }
+        }
+        else {
+            
+            ss[(int)type] << line << '\n';
+        }
+    }
+    
+    return { ss[0].str(), ss[1].str() };
+}
 
 static unsigned int compileShader(unsigned int type, const std::string& source)
 {
@@ -90,44 +130,45 @@ int main() {
         return -1;
     }
     
+    GLuint VertexArrayID;
+    glGenVertexArrays(1, &VertexArrayID);
+    glBindVertexArray(VertexArrayID);
+    
     // Vertex data to use for triangle draw
-    float positions[6] = {
-        -0.5f, -0.5f,
-         0.0f,  0.5f,
-         0.5f, -0.5f
+    float positions[] = {
+        -0.5f, -0.5f, // 0
+         0.5f, -0.5f, // 1
+         0.5f,  0.5f, // 2
+        -0.5f,  0.5f  // 3
     };
     
+    GLuint indices[] = {
+        0, 1, 2,
+        2, 3, 0
+    };
     
     // Create a buffer or memory on the VRAM and store your vertex in it.
+    //  Create buffer and copy data
     unsigned int buffer; // Stores the ID of the buffer generated
     glGenBuffers(1, &buffer); // Generates a buffer and stores the ID in the buffer variable
     glBindBuffer(GL_ARRAY_BUFFER, buffer); // Select the buffer
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW); // Copy Data in generated Buffer.
+    glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), positions, GL_STATIC_DRAW); // Copy Data in generated Buffer.
     
+    
+    // define vertex layout
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
     glEnableVertexAttribArray(0);
     
-    std::string vertexShader =
-         "#version 330 core\n"
-         "layout (location = 0) in vec3 aPos;\n"
-         "void main()\n"
-         "{\n"
-         "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-         "}\0";
     
+    // Create an index buffer or memory on the VRAM and store your vertex in it.
+    unsigned int ibo; // Stores the ID of the buffer generated
+    glGenBuffers(1, &ibo); // Generates a buffer and stores the ID in the buffer variable
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo); // Select the buffer
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(GLuint), indices, GL_STATIC_DRAW); // Copy Data in generated Buffer.
     
-    std::string fragmentShader =
-         "#version 330 core\n"
-         "out vec4 FragColor;\n"
-         "void main()\n"
-         "{\n"
-         "   FragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);\n"
-         "}\n\0";
-
-
+    shaderProgramSource source = parseShader("/Users/william/Documents/Personal/OpenGL/OpenGL/OpenGL/res/shaders/Basic.shader");
     
-    
-    unsigned int shader = createShader(vertexShader, fragmentShader);
+    unsigned int shader = createShader(source.vertexSource, source.fragmentSource);
     glUseProgram(shader);
     
     while(!glfwWindowShouldClose(window)){
@@ -137,7 +178,7 @@ int main() {
         
         
         // Draw to screen
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
         
         glfwSwapBuffers(window);
         
@@ -145,8 +186,13 @@ int main() {
         
     }
     
+    // Cleanup VBO
+    glDeleteBuffers(1, &buffer);
+    glDeleteVertexArrays(1, &VertexArrayID);
     glDeleteProgram(shader);
     
+    
+    // Close OpenGL window and terminate GLFW
     glfwTerminate();
     
     return 0;
