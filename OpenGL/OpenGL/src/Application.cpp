@@ -143,6 +143,8 @@ int main() {
     
     glfwMakeContextCurrent(window);
     
+    glfwSwapInterval(1);
+    
     glewExperimental = GL_TRUE;
     if(glewInit() != GLEW_OK) {
         std::cout<< "Failed to initialize glew." <<std::endl;
@@ -190,11 +192,19 @@ int main() {
     unsigned int shader = createShader(source.vertexSource, source.fragmentSource);
     glUseProgram(shader);
     
+    GLint location = glGetUniformLocation(shader, "uColor");
+    glUniform4f(location, 0.8f, 0.3f, 0.8f, 1.0f);
+    
+    
+    float red = 0.0f;
+    float step = 0.05f;
+    
     while(!glfwWindowShouldClose(window)){
         
         glClearColor(0, 0, 0, 0);
         glClear(GL_COLOR_BUFFER_BIT);
         
+        glUniform4f(location, red, 0.3f, 0.8f, 1.0f);
         
         // Draw to screen
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
@@ -202,6 +212,13 @@ int main() {
         glfwSwapBuffers(window);
         
         glfwPollEvents();
+        
+        
+        // increment red
+        if (red < 0.0f || red > 1.0f)
+            step *= -1.0;
+        red += step;
+        
         
     }
     
