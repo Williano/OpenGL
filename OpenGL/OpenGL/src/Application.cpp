@@ -23,6 +23,25 @@
 
 #define GLEW_STATIC
 
+#define ASSERT(x) if(!(x)) __debugbreak();
+#define glCall(x) glClearError();\
+x;\
+ASSERT(glLogCall)
+
+static void glClearError(){
+    while (glGetError() != GL_NO_ERROR);
+}
+
+
+static bool glLogCall(){
+    while (GLenum error = glGetError()) {
+        std::cout<< "[OPENGL Error] (" << error << ")" <<std::endl;
+        return false;
+    }
+    
+    return true;
+}
+
 
 struct shaderProgramSource {
     std::string vertexSource;
