@@ -31,6 +31,9 @@
 		3D46A8792369E78700CE4250 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		3D46A87B2369E79A00CE4250 /* libGLEW.2.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.1.0.dylib; path = ../../../../../../usr/local/Cellar/glew/2.1.0/lib/libGLEW.2.1.0.dylib; sourceTree = "<group>"; };
 		3D46A87D2369E7AC00CE4250 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../../../usr/local/Cellar/glfw/3.3/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
+		3DECF9782372EACF006425A3 /* shader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shader.h; sourceTree = "<group>"; };
+		3DECF9792372EBFF006425A3 /* shader.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader.vs; sourceTree = "<group>"; };
+		3DECF97A2372EC13006425A3 /* shader.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = shader.fs; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +70,7 @@
 		3D46A8702369CB3400CE4250 /* HelloTriangle */ = {
 			isa = PBXGroup;
 			children = (
+				3DECF97B2372ED1E006425A3 /* shader */,
 				3D46A8712369CB3400CE4250 /* main.cpp */,
 			);
 			path = HelloTriangle;
@@ -80,6 +84,16 @@
 				3D46A8792369E78700CE4250 /* OpenGL.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3DECF97B2372ED1E006425A3 /* shader */ = {
+			isa = PBXGroup;
+			children = (
+				3DECF9782372EACF006425A3 /* shader.h */,
+				3DECF9792372EBFF006425A3 /* shader.vs */,
+				3DECF97A2372EC13006425A3 /* shader.fs */,
+			);
+			path = shader;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
